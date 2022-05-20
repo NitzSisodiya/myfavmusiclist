@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Autocomplete, Box, Button, Grid, TextField } from "@mui/material";
 import data from "../data.json";
 import { Container } from "@mui/system";
@@ -7,21 +7,29 @@ import List from "./List";
 import Gridlist from "./Grid";
 import { useDispatch, useSelector } from "react-redux";
 import { addAlbum } from "../redux/albumSlice";
+import BestList from "./BestList";
 
-function Body() {
+function Body({auth, best}) {
   const defaultProps = {
     options: data.albums,
     getOptionLabel: (option) => option.title,
   };
-  const [favorite, setFavorite] = useState("");
-  console.log("favorite", favorite);
   const dispatch = useDispatch();
-  const songsFav = useSelector((state) => state.album);
-  console.log("state-", songsFav);
+  const [favorite, setFavorite] = useState("");
+  const favSongList = useSelector((state) => state.album);
 
   const handleClick = () => {
+    if (favorite == null || favorite == "") {
+      return alert("Please select album");
+    } else {
+      const available = favSongList.album.find((li) => li.id === favorite.id);
+      if (available !== undefined) return alert("Album already exists");
+    }
+
     dispatch(addAlbum(favorite));
+    setFavorite("");
   };
+
   return (
     <>
       <Container>
@@ -29,7 +37,6 @@ function Body() {
           sx={{
             width: "100%",
             height: 60,
-            backgroundColor: "#e6ffff",
           }}
           mt={2}
           display={"flex"}
@@ -48,9 +55,13 @@ function Body() {
           </Button>
         </Box>
         <hr></hr>
-        <Box sx={{ width: "100%", height: 300, backgroundColor: "#e6ffff" }}>
-          <List />
-          <Gridlist/>
+
+        <Box sx={{ width: "100%", height: "auto" }}>
+          {
+           best ? 
+         <BestList/> : 
+          auth ? <List /> : <Gridlist />
+          }
         </Box>
       </Container>
     </>

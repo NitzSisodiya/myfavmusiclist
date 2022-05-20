@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -9,41 +9,50 @@ import Paper from "@mui/material/Paper";
 import DeleteIcon from "@mui/icons-material/Delete";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteAlbum } from "../redux/albumSlice";
+import { addBestOfTheBest, deleteAlbum } from "../redux/albumSlice";
+import { Box } from "@mui/material";
 
 export default function List() {
   const dispatch = useDispatch();
   const favSongList = useSelector((state) => state.album);
-  const initialList = favSongList.album;
-  console.log("listinitial", initialList);
-  const [filterList, setFilterList] = useState(initialList);
-  console.log("list ", filterList);
+  const [filterList, setFilterList] = useState([]);
+  useEffect(() => {
+    setFilterList(favSongList.album);
+  }, [favSongList.album]);
 
   const handleSearch = (event) => {
     if (event.target.value === "") {
-      setFilterList(initialList);
-      return;
+      setFilterList(favSongList.album);
     }
-    const filteredSongs = initialList.filter(
+    const filteredSongs = favSongList.album.filter(
       (item) =>
         item.title.toLowerCase().indexOf(event.target.value.toLowerCase()) !==
-        -1
-        );
+          -1 || item.id === Number(event.target.value) || item.date === Number(event.target.value)
+    );
     setFilterList(filteredSongs);
   };
+
   const handleDelete = (id) => {
     dispatch(deleteAlbum(id));
   };
 
+  const handleBestOfBest = (id) => {
+    dispatch(addBestOfTheBest(id));
+  };
+ 
   return (
     <>
-      <input
-        className="my-1 shadow border border-none"
-        type="search"
-        placeholder="Search user"
-        onChange={handleSearch}
-      />
-      <TableContainer component={Paper}>
+      <Box sx={{ width: "100%", height: 100 }}>
+        <input
+          style={{ width: "50%", height: 50 }}
+          className="my-1 shadow border border-none"
+          type="search"
+          placeholder="Search user"
+          onChange={handleSearch}
+        />
+     
+      </Box>
+      <TableContainer component={Paper} mt={2}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
@@ -54,7 +63,7 @@ export default function List() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {initialList?.map((row) => (
+            {filterList?.map((row) => (
               <TableRow
                 key={row.title}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -67,7 +76,9 @@ export default function List() {
                 <TableCell align="right">
                   <DeleteIcon onClick={() => handleDelete(row.id)} />
                 </TableCell>
-                {/* <TableCell align="right"><StarBorderIcon onClick={bestOfBest()} /></TableCell> */}
+                <TableCell align="right">
+                  <StarBorderIcon onClick={() => handleBestOfBest(row.id)} />
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -76,3 +87,4 @@ export default function List() {
     </>
   );
 }
+

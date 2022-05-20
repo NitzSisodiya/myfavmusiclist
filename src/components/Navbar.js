@@ -1,5 +1,4 @@
-// import React from "react";
-import * as React from "react";
+import React, { useState } from "react";
 import { styled, alpha } from "@mui/material/styles";
 import {
   AppBar,
@@ -13,54 +12,18 @@ import {
   Switch,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import SearchIcon from "@mui/icons-material/Search";
-
-const Search = styled("div")(({ theme }) => ({
-  position: "relative",
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
-  "&:hover": {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
-  },
-  marginLeft: 0,
-  width: "100%",
-  [theme.breakpoints.up("sm")]: {
-    marginLeft: theme.spacing(1),
-    width: "auto",
-  },
-}));
-
-const SearchIconWrapper = styled("div")(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: "100%",
-  position: "absolute",
-  pointerEvents: "none",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-}));
-
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: "inherit",
-  "& .MuiInputBase-input": {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create("width"),
-    width: "100%",
-    [theme.breakpoints.up("sm")]: {
-      width: "12ch",
-      "&:focus": {
-        width: "20ch",
-      },
-    },
-  },
-}));
+import Body from "./Body";
 
 function Navbar() {
-  const [auth, setAuth] = React.useState(true);
+  const [auth, setAuth] = useState(true);
+  const [best, setBest] = useState(false);
+
   const handleChange = (event) => {
     setAuth(event.target.checked);
+  };
+
+  const handleChangeBest = (event) => {
+    setBest(event.target.checked);
   };
   return (
     <>
@@ -97,18 +60,22 @@ function Navbar() {
                 label={auth ? "List" : "Grid"}
               />
             </FormGroup>
-            <Search>
-              <SearchIconWrapper>
-                <SearchIcon />
-              </SearchIconWrapper>
-              <StyledInputBase
-                placeholder="Search…"
-                inputProps={{ "aria-label": "search" }}
+            <FormGroup>
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={best}
+                    onChange={handleChangeBest}
+                    color="warning"
+                  />
+                }
+                label="Best of Best"
               />
-            </Search>
+            </FormGroup>
           </Toolbar>
         </AppBar>
       </Box>
+      <Body auth={auth} best={best} />
     </>
   );
 }
