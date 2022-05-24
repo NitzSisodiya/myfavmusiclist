@@ -16,10 +16,18 @@ const albumSlice = createSlice({
     addBestOfTheBest: (state, action) => {
       const update = {
         ...state.album.filter((li) => li.id === action.payload)[0],
-      };
-      return { ...state, bestOfBest: [...state.bestOfBest, update] };
+      };console.log(update.id);
+      const exist = state.album.bestOfBest.findOne(list=>list.id === update.id)
+      if(exist==""){
+        return { ...state, bestOfBest: [...state.bestOfBest, update] };
+      }
+      return "Already in best of best list"
+    },
+    removeBestOfTheBest: (state, action) => {
+      state.album.bestOfBest = state.album.bestOfBest.filter((li) => li.id !== action.payload);
     },
   },
 });
-export const { addAlbum, deleteAlbum, addBestOfTheBest } = albumSlice.actions;
+export const { addAlbum, deleteAlbum, addBestOfTheBest, removeBestOfTheBest } =
+  albumSlice.actions;
 export default albumSlice.reducer;

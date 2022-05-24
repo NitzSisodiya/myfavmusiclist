@@ -33,10 +33,10 @@ function Gridlist() {
     <>
       <Box sx={{ width: "100%", height: 30 }}>
         <input
-          style={{ width: "50%", height: 30 }}
+         style={{ width: "50%", height: 50 }}
           className="my-1 shadow border border-none"
           type="search"
-          placeholder="Search user"
+          placeholder="Search albums..."
           onChange={handleSearch}
         />
       </Box>
@@ -52,12 +52,12 @@ function Gridlist() {
                   alt="green iguana"
                 />
                 <CardContent>
-                  <Typography gutterBottom variant="h5" component="div">
-                    Title: {row.title}
+                  <Typography gutterBottom variant="h5" component="div" fontSize={20} height={50}>
+                    <b>Title:</b> {row.title}
                   </Typography>
                   <hr />
-                  <Typography gutterBottom variant="h5" component="div">
-                    Artist Name:{row.artist_name}
+                  <Typography gutterBottom variant="h5" component="div" fontSize={20} height={50} >
+                    <b>Artist Name:</b>{row.artist_name}
                   </Typography>
                   {/* <Typography variant="body2" color="text.secondary">
                 {row.description}

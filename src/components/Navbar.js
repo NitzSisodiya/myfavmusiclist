@@ -1,17 +1,13 @@
 import React, { useState } from "react";
-import { styled, alpha } from "@mui/material/styles";
 import {
   AppBar,
   Box,
   Toolbar,
-  IconButton,
   Typography,
-  InputBase,
   FormGroup,
   FormControlLabel,
   Switch,
 } from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
 import Body from "./Body";
 
 function Navbar() {
@@ -30,23 +26,15 @@ function Navbar() {
       <Box sx={{ flexGrow: 1 }}>
         <AppBar position="static">
           <Toolbar>
-            <IconButton
-              size="large"
-              edge="start"
-              color="inherit"
-              aria-label="open drawer"
-              sx={{ mr: 2 }}
-            >
-              <MenuIcon />
-            </IconButton>
             <Typography
               variant="h6"
               noWrap
               component="div"
               sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
             >
-              FavMusicList
+              Favourite Music List
             </Typography>
+            <span style={{ marginRight: "10px" }}>Grid</span>
             <FormGroup>
               <FormControlLabel
                 control={
@@ -57,7 +45,7 @@ function Navbar() {
                     color="warning"
                   />
                 }
-                label={auth ? "List" : "Grid"}
+                label="List"
               />
             </FormGroup>
             <FormGroup>

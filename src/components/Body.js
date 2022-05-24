@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Autocomplete, Box, Button, Grid, TextField } from "@mui/material";
+import React, { useState } from "react";
+import { Autocomplete, Box, Button, TextField } from "@mui/material";
 import data from "../data.json";
 import { Container } from "@mui/system";
 
@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addAlbum } from "../redux/albumSlice";
 import BestList from "./BestList";
 
-function Body({auth, best}) {
+function Body({ auth, best }) {
   const defaultProps = {
     options: data.albums,
     getOptionLabel: (option) => option.title,
@@ -18,8 +18,8 @@ function Body({auth, best}) {
   const [favorite, setFavorite] = useState("");
   const favSongList = useSelector((state) => state.album);
 
-  const handleClick = () => {
-    if (favorite == null || favorite == "") {
+  const handleClick = (defaultProps) => {
+    if (favorite == null || favorite === "") {
       return alert("Please select album");
     } else {
       const available = favSongList.album.find((li) => li.id === favorite.id);
@@ -28,6 +28,7 @@ function Body({auth, best}) {
 
     dispatch(addAlbum(favorite));
     setFavorite("");
+    
   };
 
   return (
@@ -45,6 +46,7 @@ function Body({auth, best}) {
             disablePortal
             {...defaultProps}
             id="combo-box-demo"
+        //  value={favorite}
             options={data.albums}
             onChange={(event, value) => setFavorite(value)}
             sx={{ width: 300 }}
@@ -57,11 +59,7 @@ function Body({auth, best}) {
         <hr></hr>
 
         <Box sx={{ width: "100%", height: "auto" }}>
-          {
-           best ? 
-         <BestList/> : 
-          auth ? <List /> : <Gridlist />
-          }
+          {best ? <BestList /> : auth ? <List /> : <Gridlist />}
         </Box>
       </Container>
     </>
