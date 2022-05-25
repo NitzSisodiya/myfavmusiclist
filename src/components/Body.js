@@ -24,7 +24,9 @@ function Body({ auth, best }) {
       return alert("Please select album");
     } else {
       const available = favSongList.album.find((li) => li.id === favorite.id);
-      if (available !== undefined) return alert("Album already exists");
+      setFavorite("");
+      if (available !== undefined) 
+      return alert("Album already exists");
     }
     dispatch(addAlbum(favorite));
     setFavorite("");

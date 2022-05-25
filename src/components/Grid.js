@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Card from "@mui/material/Card";
-// import CardActions from '@mui/material/CardActions';
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
-// import Button from '@mui/material/Button';
 import Typography from "@mui/material/Typography";
 import { useDispatch, useSelector } from "react-redux";
 import { Box, Button, CardActions, Grid } from "@mui/material";
@@ -11,15 +9,10 @@ import { Container } from "@mui/system";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 import StarIcon from "@mui/icons-material/Star";
 import DeleteIcon from "@mui/icons-material/Delete";
-import {
-  addBestOfTheBest,
-  deleteAlbum,
-  removeBestOfTheBest,
-} from "../redux/albumSlice";
+import { deleteAlbum } from "../redux/albumSlice";
+import Fav from "./Fav";
 
 function Gridlist() {
-  const isFavorite = useSelector((state) => state.album.isFavorite);
-
   const favSongList = useSelector((state) => state.album);
   const [filterList, setFilterList] = useState([]);
   const dispatch = useDispatch();
@@ -42,12 +35,12 @@ function Gridlist() {
   const handleDelete = (id) => {
     dispatch(deleteAlbum(id));
   };
-  const addToBestOfBest = (id) => {
-    dispatch(addBestOfTheBest(id));
-  };
-  const removeFromBestOfBest = (id) => {
-    dispatch(removeBestOfTheBest(id));
-  };
+  // const addToBestOfBest = (id) => {
+  //   dispatch(addBestOfTheBest(id));
+  // };
+  // const removeFromBestOfBest = (id) => {
+  //   dispatch(removeBestOfTheBest(id));
+  // };
 
   return (
     <>
@@ -94,11 +87,12 @@ function Gridlist() {
                   </Typography>
                 </CardContent>
                 <CardActions>
-                  {isFavorite ? (
+                  <Fav id={row.id} fav={row} />
+                  {/* {isFavorite ? (
                     <StarBorderIcon onClick={() => addToBestOfBest(row.id)} />
                   ) : (
                     <StarIcon onClick={() => removeFromBestOfBest(row.id)} />
-                  )}
+                  )} */}
                   <Button size="small" onClick={() => handleDelete(row.id)}>
                     <DeleteIcon />
                   </Button>

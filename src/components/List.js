@@ -49,14 +49,12 @@ export default function List() {
   };
 
   const dateSort = () => {
-    const newFilterList = filterList
-      .slice()
-      .sort((a, b) => Number(b.date.slice(0, 1)) - Number(a.date.slice(0, 1)));
-    const fianlList = newFilterList
-      .slice()
-      .sort((a, b) => Number(b.date.slice(1, 2)) - Number(a.date.slice(1, 2)));
+    const newFilterList = filterList.slice().sort((a, b) => Number(b.date.slice(0, 1)) - Number(a.date.slice(0, 1)));
+    // const fianlList = newFilterList
+    //   .slice()
+    //   .sort((a, b) => Number(b.date.slice(1, 2)) - Number(a.date.slice(1, 2)));
 
-    setFilterList(fianlList);
+    setFilterList(newFilterList);
   };
 
   return (
@@ -76,15 +74,15 @@ export default function List() {
           <TableHead>
             <TableRow>
               <TableCell>
-                Id <button onClick={idSort}>Sort</button>{" "}
+                <b>Id</b> <button onClick={idSort}>Sort</button>{" "}
               </TableCell>
               <TableCell align="right">
-                Title <button onClick={titleSort}>Sort</button>
+                <b>Title</b> <button onClick={titleSort}>Sort</button>
               </TableCell>
               <TableCell align="right">
-                Date <button onClick={dateSort}>Sort</button>
+               <b> Date</b> <button onClick={dateSort}>Sort</button>
               </TableCell>
-              <TableCell align="right">Action</TableCell>
+              <TableCell align="right"><b>Action</b></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

@@ -32,7 +32,7 @@ function Navbar() {
               component="div"
               sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
             >
-              Favourite Music List
+              Favorite Music List
             </Typography>
             <span style={{ marginRight: "10px" }}>Grid</span>
             <FormGroup>

@@ -7,9 +7,11 @@ const Fav = ({ id, fav }) => {
   const dispatch = useDispatch();
   const addToBestOfBest = (id) => {
     dispatch(addBestOfTheBest(id));
+    alert("Added to Best of Best")
   };
   const removeFromBestOfBest = (id) => {
     dispatch(removeBestOfTheBest(id));
+    alert("Removed from Best of Best")
   };
   return (
     <>
