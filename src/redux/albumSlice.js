@@ -14,17 +14,26 @@ const albumSlice = createSlice({
       state.album = state.album.filter((li) => li.id !== action.payload);
     },
     addBestOfTheBest: (state, action) => {
-      const update = {
-        ...state.album.filter((li) => li.id === action.payload)[0],
-      };console.log(update.id);
-      const exist = state.album.bestOfBest.findOne(list=>list.id === update.id)
-      if(exist==""){
-        return { ...state, bestOfBest: [...state.bestOfBest, update] };
-      }
-      return "Already in best of best list"
+      const changeFav = state.album.find((list) => list.id === action.payload);
+      const updated = { ...changeFav, fav: true };
+      const updateList = state.album.map((list) =>
+        list.id === action.payload ? updated : list
+      );
+      state.album = updateList;
+      state.bestOfBest = [
+        ...state.bestOfBest,
+        updateList.filter((li) => li.id === action.payload)[0],
+      ];
     },
     removeBestOfTheBest: (state, action) => {
-      state.album.bestOfBest = state.album.bestOfBest.filter((li) => li.id !== action.payload);
+      const changeFav = state.album.find((list) => list.id === action.payload);
+      const updated = { ...changeFav, fav: false };
+      state.album = state.album.map((list) =>
+        list.id === action.payload ? updated : list
+      );
+      state.bestOfBest = state.bestOfBest.filter(
+        (li) => li.id !== action.payload
+      );
     },
   },
 });

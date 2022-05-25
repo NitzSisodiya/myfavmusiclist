@@ -7,33 +7,18 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import DeleteIcon from "@mui/icons-material/Delete";
-import StarBorderIcon from "@mui/icons-material/StarBorder";
-import StarIcon from "@mui/icons-material/Star";
+import { deleteAlbum } from "../redux/albumSlice";
+import { Box } from "@mui/material";
+import Fav from "./Fav";
 import { useDispatch, useSelector } from "react-redux";
-import { addBestOfTheBest, deleteAlbum ,removeBestOfTheBest} from "../redux/albumSlice";
-import { Box, Stack, TextField } from "@mui/material";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 
 export default function List() {
-  const [value, setValue] = useState(new Date(""));
-  const [add, setAdd] = useState(true);
-
   const dispatch = useDispatch();
   const favSongList = useSelector((state) => state.album);
   const [filterList, setFilterList] = useState([]);
   useEffect(() => {
     setFilterList(favSongList.album);
   }, [favSongList.album]);
-
-  const handleChange = (newValue) => {
-    setValue(newValue);
-    const filteredSongs = favSongList.album.filter(
-      (item) => item.date === value
-    );
-    setFilterList(filteredSongs);
-  };
 
   const handleSearch = (event) => {
     if (event.target.value === "") {
@@ -53,13 +38,25 @@ export default function List() {
     dispatch(deleteAlbum(id));
   };
 
-  const addToBestOfBest = (id) => {
-    dispatch(addBestOfTheBest(id));
-    setAdd(false);
+  const titleSort = () => {
+    setFilterList(
+      filterList.slice().sort((a, b) => (a.title > b.title ? 1 : -1))
+    );
   };
-  const removeFromBestOfBest = (id) => {
-    dispatch(removeBestOfTheBest(id));
-    setAdd(true);
+
+  const idSort = () => {
+    setFilterList(filterList.slice().sort((a, b) => a.id - b.id));
+  };
+
+  const dateSort = () => {
+    const newFilterList = filterList
+      .slice()
+      .sort((a, b) => Number(b.date.slice(0, 1)) - Number(a.date.slice(0, 1)));
+    const fianlList = newFilterList
+      .slice()
+      .sort((a, b) => Number(b.date.slice(1, 2)) - Number(a.date.slice(1, 2)));
+
+    setFilterList(fianlList);
   };
 
   return (
@@ -73,49 +70,39 @@ export default function List() {
           placeholder="Search album..."
           onChange={handleSearch}
         />
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <Stack spacing={3} style={{ width: "50%", height: 30 }}>
-            <DesktopDatePicker
-              inputFormat="dd/MM/yyyy"
-              value={value}
-              onChange={handleChange}
-              renderInput={(params) => <TextField {...params} />}
-            />
-          </Stack>
-        </LocalizationProvider>
       </Box>
       <TableContainer component={Paper} mt={2}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>Id</TableCell>
-              <TableCell align="right">Title</TableCell>
-              <TableCell align="right">Date</TableCell>
+              <TableCell>
+                Id <button onClick={idSort}>Sort</button>{" "}
+              </TableCell>
+              <TableCell align="right">
+                Title <button onClick={titleSort}>Sort</button>
+              </TableCell>
+              <TableCell align="right">
+                Date <button onClick={dateSort}>Sort</button>
+              </TableCell>
               <TableCell align="right">Action</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {filterList?.map((row) => (
               <TableRow
-                key={row.title}
+                key={row.id}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
                 <TableCell component="th" scope="row">
                   {row.id}
                 </TableCell>
                 <TableCell align="right">{row.title}</TableCell>
-                {console.log("date type", typeof row.date)}
-                {console.log("date", row.date)}
                 <TableCell align="right">{row.date}</TableCell>
                 <TableCell align="right">
                   <DeleteIcon onClick={() => handleDelete(row.id)} />
                 </TableCell>
                 <TableCell align="right">
-                  {add ? (
-                    <StarBorderIcon onClick={() => addToBestOfBest(row.id)} />
-                  ) : (
-                    <StarIcon onClick={() => removeFromBestOfBest(row.id)} />
-                  )}
+                  <Fav id={row.id} fav={row} />
                 </TableCell>
               </TableRow>
             ))}

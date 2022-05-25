@@ -12,7 +12,6 @@ import { useSelector } from "react-redux";
 
 function BestList() {
   const bestList = useSelector((state) => state.album.bestOfBest);
-  console.log("best",bestList);
   return (
     <>
       <TableContainer component={Paper} mt={2}>

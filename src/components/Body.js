@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { Autocomplete, Box, Button, TextField } from "@mui/material";
-import data from "../data.json";
 import { Container } from "@mui/system";
-
-import List from "./List";
-import Gridlist from "./Grid";
 import { useDispatch, useSelector } from "react-redux";
 import { addAlbum } from "../redux/albumSlice";
+
+import data from "../data.json";
 import BestList from "./BestList";
+import List from "./List";
+import Gridlist from "./Grid";
 
 function Body({ auth, best }) {
   const defaultProps = {
@@ -19,16 +19,15 @@ function Body({ auth, best }) {
   const favSongList = useSelector((state) => state.album);
 
   const handleClick = (defaultProps) => {
-    if (favorite == null || favorite === "") {
+    if (!favorite || favorite === "") {
+      setFavorite("");
       return alert("Please select album");
     } else {
       const available = favSongList.album.find((li) => li.id === favorite.id);
       if (available !== undefined) return alert("Album already exists");
     }
-
     dispatch(addAlbum(favorite));
     setFavorite("");
-    
   };
 
   return (
@@ -46,14 +45,20 @@ function Body({ auth, best }) {
             disablePortal
             {...defaultProps}
             id="combo-box-demo"
-        //  value={favorite}
+            value={favorite}
+            getOptionLabel={(option) => option.title || ""}
             options={data.albums}
             onChange={(event, value) => setFavorite(value)}
             sx={{ width: 300 }}
             renderInput={(params) => <TextField {...params} label="albums" />}
           />
-          <Button variant="contained" color="primary" onClick={handleClick}>
-            Add
+          <Button
+            variant="outlined"
+            color="primary"
+            sx={{ height: "40px", marginTop: "10px", marginLeft: "8px" }}
+            onClick={handleClick}
+          >
+            Add to Favorite
           </Button>
         </Box>
         <hr></hr>

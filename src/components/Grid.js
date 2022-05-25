@@ -5,14 +5,24 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 // import Button from '@mui/material/Button';
 import Typography from "@mui/material/Typography";
-import { useSelector } from "react-redux";
-import { Box, Grid } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+import { Box, Button, CardActions, Grid } from "@mui/material";
 import { Container } from "@mui/system";
+import StarBorderIcon from "@mui/icons-material/StarBorder";
+import StarIcon from "@mui/icons-material/Star";
+import DeleteIcon from "@mui/icons-material/Delete";
+import {
+  addBestOfTheBest,
+  deleteAlbum,
+  removeBestOfTheBest,
+} from "../redux/albumSlice";
 
 function Gridlist() {
+  const isFavorite = useSelector((state) => state.album.isFavorite);
+
   const favSongList = useSelector((state) => state.album);
   const [filterList, setFilterList] = useState([]);
-
+  const dispatch = useDispatch();
   useEffect(() => {
     setFilterList(favSongList.album);
   }, [favSongList.album]);
@@ -29,11 +39,21 @@ function Gridlist() {
     setFilterList(filteredSongs);
   };
 
+  const handleDelete = (id) => {
+    dispatch(deleteAlbum(id));
+  };
+  const addToBestOfBest = (id) => {
+    dispatch(addBestOfTheBest(id));
+  };
+  const removeFromBestOfBest = (id) => {
+    dispatch(removeBestOfTheBest(id));
+  };
+
   return (
     <>
       <Box sx={{ width: "100%", height: 30 }}>
         <input
-         style={{ width: "50%", height: 50 }}
+          style={{ width: "50%", height: 50 }}
           className="my-1 shadow border border-none"
           type="search"
           placeholder="Search albums..."
@@ -52,21 +72,37 @@ function Gridlist() {
                   alt="green iguana"
                 />
                 <CardContent>
-                  <Typography gutterBottom variant="h5" component="div" fontSize={20} height={50}>
+                  <Typography
+                    gutterBottom
+                    variant="h5"
+                    component="div"
+                    fontSize={20}
+                    height={50}
+                  >
                     <b>Title:</b> {row.title}
                   </Typography>
                   <hr />
-                  <Typography gutterBottom variant="h5" component="div" fontSize={20} height={50} >
-                    <b>Artist Name:</b>{row.artist_name}
+                  <Typography
+                    gutterBottom
+                    variant="h5"
+                    component="div"
+                    fontSize={20}
+                    height={50}
+                  >
+                    <b>Artist Name:</b>
+                    {row.artist_name}
                   </Typography>
-                  {/* <Typography variant="body2" color="text.secondary">
-                {row.description}
-              </Typography> */}
                 </CardContent>
-                {/* <CardActions>
-          <Button size="small">Share</Button>
-          <Button size="small">Learn More</Button>
-        </CardActions> */}
+                <CardActions>
+                  {isFavorite ? (
+                    <StarBorderIcon onClick={() => addToBestOfBest(row.id)} />
+                  ) : (
+                    <StarIcon onClick={() => removeFromBestOfBest(row.id)} />
+                  )}
+                  <Button size="small" onClick={() => handleDelete(row.id)}>
+                    <DeleteIcon />
+                  </Button>
+                </CardActions>
               </Card>
             </Grid>
           ))}
