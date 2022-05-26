@@ -8,10 +8,11 @@ const albumSlice = createSlice({
   },
   reducers: {
     addAlbum: (state, action) => {
-      state.album.push(action.payload);
+      state.album.push(action.payload);console.log("updatedlist",state);
     },
     deleteAlbum: (state, action) => {
       state.album = state.album.filter((li) => li.id !== action.payload);
+      state.bestOfBest = state.bestOfBest.filter((li)=> li.id !== action.payload)
     },
     addBestOfTheBest: (state, action) => {
       const changeFav = state.album.find((list) => list.id === action.payload);
@@ -19,7 +20,8 @@ const albumSlice = createSlice({
       const updateList = state.album.map((list) =>
         list.id === action.payload ? updated : list
       );
-      state.album = updateList;
+    state.album = updateList
+      
       state.bestOfBest = [
         ...state.bestOfBest,
         updateList.filter((li) => li.id === action.payload)[0],

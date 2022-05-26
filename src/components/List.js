@@ -6,6 +6,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import Tooltip from "@mui/material/Tooltip";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { deleteAlbum } from "../redux/albumSlice";
 import { Box } from "@mui/material";
@@ -49,10 +50,9 @@ export default function List() {
   };
 
   const dateSort = () => {
-    const newFilterList = filterList.slice().sort((a, b) => Number(b.date.slice(0, 1)) - Number(a.date.slice(0, 1)));
-    // const fianlList = newFilterList
-    //   .slice()
-    //   .sort((a, b) => Number(b.date.slice(1, 2)) - Number(a.date.slice(1, 2)));
+    const newFilterList = filterList
+      .slice()
+      .sort((a, b) => Number(b.date.slice(0, 1)) - Number(a.date.slice(0, 1)));
 
     setFilterList(newFilterList);
   };
@@ -80,9 +80,11 @@ export default function List() {
                 <b>Title</b> <button onClick={titleSort}>Sort</button>
               </TableCell>
               <TableCell align="right">
-               <b> Date</b> <button onClick={dateSort}>Sort</button>
+                <b> Date</b> <button onClick={dateSort}>Sort</button>
               </TableCell>
-              <TableCell align="right"><b>Action</b></TableCell>
+              <TableCell align="right">
+                <b>Action</b>
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -97,7 +99,9 @@ export default function List() {
                 <TableCell align="right">{row.title}</TableCell>
                 <TableCell align="right">{row.date}</TableCell>
                 <TableCell align="right">
-                  <DeleteIcon onClick={() => handleDelete(row.id)} />
+                  <Tooltip title="Delete">
+                    <DeleteIcon onClick={() => handleDelete(row.id)} />
+                  </Tooltip>
                 </TableCell>
                 <TableCell align="right">
                   <Fav id={row.id} fav={row} />

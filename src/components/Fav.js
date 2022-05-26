@@ -16,7 +16,7 @@ const Fav = ({ id, fav }) => {
   return (
     <>
       {fav.fav ? (
-        <StarIcon onClick={() => removeFromBestOfBest(id)} />
+        <StarIcon tooltip="add to best of best " onClick={() => removeFromBestOfBest(id)} />
       ) : (
         <StarBorderIcon onClick={() => addToBestOfBest(id)} />
       )}
