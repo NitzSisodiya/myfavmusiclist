@@ -19,7 +19,6 @@ function BestList() {
 
   const removeFromBestOfBest = (id) => {
     dispatch(removeBestOfTheBest(id));
-    alert("Removed from Best of Best");
   };
 
   return (
@@ -27,7 +26,7 @@ function BestList() {
     <Typography
         mt={2}
         color="primary.dark"
-        variant="h3"
+        variant="h4"
         gutterBottom
         align="center"
         component="div"

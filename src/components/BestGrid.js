@@ -22,7 +22,7 @@ function BestGrid() {
       <Typography
         mt={2}
         color="primary.dark"
-        variant="h3"
+        variant="h4"
         gutterBottom
         align="center"
         component="div"
@@ -30,49 +30,62 @@ function BestGrid() {
         Best of Best
       </Typography>
       <Container sx={{ py: 8 }} maxWidth="md">
-        <Grid container spacing={4}>
-          {bestList.map((row) => (
-            <Grid item key={row} xs={12} sm={6} md={4}>
-              <Card sx={{ maxWidth: 345 }}>
-                <CardMedia
-                  component="img"
-                  height="200"
-                  image={row.image}
-                  alt="green iguana"
-                />
-                <CardContent>
-                  <Typography
-                    gutterBottom
-                    variant="h5"
-                    component="div"
-                    fontSize={20}
-                    height={50}
-                  >
-                    <b>Title:</b> {row.title}
-                  </Typography>
-                  <hr />
-                  <Typography
-                    gutterBottom
-                    variant="h5"
-                    component="div"
-                    fontSize={20}
-                    height={50}
-                  >
-                    <b>Artist Name:</b>
-                    {row.artist_name}
-                  </Typography>
-                </CardContent>
-                <CardActions>
-                  <Fav id={row.id} fav={row} />
+        {bestList.length > 0 ? (
+          <Grid container spacing={4}>
+            {bestList.map((row) => (
+              <Grid item key={row.id} xs={12} sm={6} md={4}>
+                <Card sx={{ maxWidth: 345 }}>
+                  <CardMedia
+                    component="img"
+                    height="200"
+                    image={row.image}
+                    alt="green iguana"
+                  />
+                  <CardContent>
+                    <Typography
+                      gutterBottom
+                      variant="h5"
+                      component="div"
+                      fontSize={20}
+                      height={50}
+                    >
+                      <b>Title:</b> {row.title}
+                    </Typography>
+                    <hr />
+                    <Typography
+                      gutterBottom
+                      variant="h5"
+                      component="div"
+                      fontSize={20}
+                      height={50}
+                    >
+                      <b>Artist Name:</b>
+                      {row.artist_name}
+                    </Typography>
+                  </CardContent>
+                  <CardActions>
+                    <Fav id={row.id} fav={row} />
 
-                  <Button size="small" onClick={() => handleDelete(row.id)}>
-                    <DeleteIcon />
-                  </Button>
-                </CardActions>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
+                    <Button size="small" onClick={() => handleDelete(row.id)}>
+                      <DeleteIcon />
+                    </Button>
+                  </CardActions>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+        ) : (
+          <Typography
+            mt={4}
+            color="primary.light"
+            variant="h5"
+            gutterBottom
+            align="center"
+            component="div"
+          >
+            Please, Add to 'Best of Best'..!
+          </Typography>
+        )}
       </Container>
     </>
   );

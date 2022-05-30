@@ -29,7 +29,7 @@ export default function List() {
       (item) =>
         item.title.toLowerCase().indexOf(event.target.value.toLowerCase()) !==
           -1 ||
-        item.id === event.target.value ||
+        item.id === Number(event.target.value) ||
         item.date === event.target.value
     );
     setFilterList(filteredSongs);
@@ -46,14 +46,13 @@ export default function List() {
   };
 
   const idSort = () => {
-    setFilterList(filterList.slice().sort((a, b) => a.id - b.id));
+    setFilterList(filterList?.slice().sort((a, b) => a.id - b.id));
   };
 
   const dateSort = () => {
     const newFilterList = filterList
       .slice()
       .sort((a, b) => Number(b.date.slice(0, 1)) - Number(a.date.slice(0, 1)));
-
     setFilterList(newFilterList);
   };
 
@@ -72,7 +71,7 @@ export default function List() {
       <Typography
         mt={2}
         color="primary.dark"
-        variant="h3"
+        variant="h4"
         gutterBottom
         align="center"
         component="div"
