@@ -8,6 +8,7 @@ import data from "../data.json";
 import BestList from "./BestList";
 import List from "./List";
 import Gridlist from "./Grid";
+import BestGrid from "./BestGrid";
 
 function Body({ auth, best }) {
   const defaultProps = {
@@ -25,8 +26,7 @@ function Body({ auth, best }) {
     } else {
       const available = favSongList.album.find((li) => li.id === favorite.id);
       setFavorite("");
-      if (available !== undefined) 
-      return alert("Album already exists");
+      if (available !== undefined) return alert("Album already exists");
     }
     dispatch(addAlbum(favorite));
     setFavorite("");
@@ -35,38 +35,56 @@ function Body({ auth, best }) {
   return (
     <>
       <Container>
-        <Box
-          sx={{
-            width: "100%",
-            height: 60,
-          }}
-          mt={2}
-          display={"flex"}
-        >
-          <Autocomplete
-            disablePortal
-            {...defaultProps}
-            id="combo-box-demo"
-            value={favorite}
-            getOptionLabel={(option) => option.title || ""}
-            options={data.albums}
-            onChange={(event, value) => setFavorite(value)}
-            sx={{ width: 300 }}
-            renderInput={(params) => <TextField {...params} label="albums" />}
-          />
-          <Button
-            variant="outlined"
-            color="primary"
-            sx={{ height: "40px", marginTop: "10px", marginLeft: "8px" }}
-            onClick={handleClick}
-          >
-            Add to Favorite
-          </Button>
-        </Box>
-        <hr></hr>
+        {!best ? (
+          <>
+            <Box
+              sx={{
+                width: "100%",
+                height: 60,
+              }}
+              mt={2}
+              display={"flex"}
+            >
+              <Autocomplete
+                disablePortal
+                {...defaultProps}
+                id="combo-box-demo"
+                value={favorite}
+                getOptionLabel={(option) => option.title || ""}
+                options={data.albums}
+                onChange={(event, value) => setFavorite(value)}
+                sx={{ width: 300 }}
+                renderInput={(params) => (
+                  <TextField {...params} label="albums" />
+                )}
+              />
+              <Button
+                variant="outlined"
+                color="primary"
+                sx={{ height: "40px", marginTop: "10px", marginLeft: "8px" }}
+                onClick={handleClick}
+              >
+                Add to Favorite
+              </Button>
+            </Box>
+            <hr></hr>
+          </>
+        ) : (
+          ""
+        )}
 
         <Box sx={{ width: "100%", height: "auto" }}>
-          {best ? <BestList /> : auth ? <List /> : <Gridlist />}
+          {best ? (
+            auth ? (
+              <BestList />
+            ) : (
+              <BestGrid />
+            )
+          ) : auth ? (
+            <List />
+          ) : (
+            <Gridlist />
+          )}
         </Box>
       </Container>
     </>

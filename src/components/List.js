@@ -9,7 +9,7 @@ import Paper from "@mui/material/Paper";
 import Tooltip from "@mui/material/Tooltip";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { deleteAlbum } from "../redux/albumSlice";
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import Fav from "./Fav";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -69,6 +69,18 @@ export default function List() {
           onChange={handleSearch}
         />
       </Box>
+      <Typography
+        mt={2}
+        color="primary.dark"
+        variant="h3"
+        gutterBottom
+        align="center"
+        component="div"
+      >
+        {filterList.length > 0
+          ? "Favorite Albums List"
+          : "Select  Favorite Albums"}
+      </Typography>
       <TableContainer component={Paper} mt={2}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>

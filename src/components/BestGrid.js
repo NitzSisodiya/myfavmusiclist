@@ -1,34 +1,17 @@
-import React, { useEffect, useState } from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import { useDispatch, useSelector } from "react-redux";
-import { Box, Button, CardActions, Grid } from "@mui/material";
+import { Button, CardActions, Grid } from "@mui/material";
 import { Container } from "@mui/system";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { deleteAlbum } from "../redux/albumSlice";
 import Fav from "./Fav";
 
-function Gridlist() {
-  const favSongList = useSelector((state) => state.album);
-  const [filterList, setFilterList] = useState([]);
+function BestGrid() {
+  const bestList = useSelector((state) => state.album.bestOfBest);
   const dispatch = useDispatch();
-  useEffect(() => {
-    setFilterList(favSongList.album);
-  }, [favSongList.album]);
-
-  const handleSearch = (event) => {
-    if (event.target.value === "") {
-      setFilterList(favSongList.album);
-    }
-    const filteredSongs = favSongList.album.filter(
-      (item) =>
-        item.title.toLowerCase().indexOf(event.target.value.toLowerCase()) !==
-          -1 || item.id === Number(event.target.value)
-    );
-    setFilterList(filteredSongs);
-  };
 
   const handleDelete = (id) => {
     dispatch(deleteAlbum(id));
@@ -36,18 +19,19 @@ function Gridlist() {
 
   return (
     <>
-      <Box sx={{ width: "100%", height: 30 }}>
-        <input
-          style={{ width: "50%", height: 50 }}
-          className="my-1 shadow border border-none"
-          type="search"
-          placeholder="Search albums..."
-          onChange={handleSearch}
-        />
-      </Box>
+      <Typography
+        mt={2}
+        color="primary.dark"
+        variant="h3"
+        gutterBottom
+        align="center"
+        component="div"
+      >
+        Best of Best
+      </Typography>
       <Container sx={{ py: 8 }} maxWidth="md">
         <Grid container spacing={4}>
-          {filterList.map((row) => (
+          {bestList.map((row) => (
             <Grid item key={row} xs={12} sm={6} md={4}>
               <Card sx={{ maxWidth: 345 }}>
                 <CardMedia
@@ -93,4 +77,4 @@ function Gridlist() {
     </>
   );
 }
-export default Gridlist;
+export default BestGrid;
